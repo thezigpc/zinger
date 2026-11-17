@@ -127,17 +127,21 @@ Each command runs the same `Room` method as the host's button, then broadcasts.
   `settings.json`, and `packs/<id>.json`. Nothing else is written.
 - **Dockerfile:** single stage, `npm ci` with `vendor/`, build, `npm prune --omit=dev`, runs
   as `node`; `docker-compose.yml` is for self-hosting. Both are the same as This or That's.
-- **Not run locally:** there is no Docker on this PC, so I haven't run the read-only test
-  (`docker run --read-only --tmpfs /tmp --cap-drop ALL -v zt:/data …`) or a local
-  clean-checkout build. The publish workflow builds from a clean checkout; that run is the
-  first real build.
+- **Clean-checkout build:** proven by the publish run below, which builds `linux/amd64`
+  from a fresh checkout of the repo.
+- **Read-only run: not tested.** There is no Docker on the development PC, so
+  `docker run --read-only --tmpfs /tmp --cap-drop ALL -v zt:/data …` hasn't been run. The
+  server writes only under `DATA_DIR`, as listed above.
 
 ## Image
 
-- **Name:** `ghcr.io/thezigpc/zinger:0.1.0`.
+- **Name:** `ghcr.io/thezigpc/zinger:0.1.0`, from commit `bf1a40f`.
+- **Repo:** [github.com/thezigpc/zinger](https://github.com/thezigpc/zinger) (public).
 - **Workflow:** `.github/workflows/publish-image.yml`, unchanged from the snippet.
-- **Status:** not published yet. That needs the GitHub repo, a first manual run, and the
-  package made Public.
+- **First run:** [run 44007201518](https://github.com/thezigpc/zinger/actions/runs/44007201518),
+  started by hand: **success**.
+- **Public:** an anonymous pull of `thezigpc/zinger:0.1.0` from GHCR answers **200**, so
+  the box can pull it.
 
 ## Standalone
 
