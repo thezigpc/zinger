@@ -1,13 +1,13 @@
 # Zinger on a Bar Games box
 
 **Report for the Bar Games side.** Guide followed:
-`C:\CodeProjects\GameBroker\integration\README.md` (SDK 0.16.0, game kit 0.9.0).
+`C:\CodeProjects\GameBroker\integration\README.md` (SDK 0.16.0, game kit 0.10.0).
 
 | | |
 |---|---|
 | Manifest | [bargames.json](bargames.json): `id: "zinger"`, port 3015, SDK level 3, `routing.basePath: true` |
-| Image | `ghcr.io/thezigpc/zinger:0.1.0` (tag = `version`) |
-| SDK / kit | `vendor/bargames-sdk-0.16.0.tgz`, `vendor/bargames-gamekit-0.9.0.tgz` |
+| Image | `ghcr.io/thezigpc/zinger:0.1.1` (tag = `version`) |
+| SDK / kit | `vendor/bargames-sdk-0.16.0.tgz`, `vendor/bargames-gamekit-0.10.0.tgz` |
 | Level reached | **3** (branded, connected, controllable) |
 
 ## `npx bargames check`
@@ -106,6 +106,39 @@ Each command runs the same `Room` method as the host's button, then broadcasts.
 - **Writer limit:** the admin can raise it from 10 to as many as 24 writers ("Writer limit" on
   `/admin`), and the TV layouts scale to match.
 
+## On-screen keyboard (0.1.1, kit 0.10.0)
+
+For a touchscreen plugged into the box (box 0.21.0): `<OnScreenKeyboard />` is mounted once in
+[client/src/main.tsx](client/src/main.tsx), so it covers every page (one app: player, host,
+TV/"host on this screen", admin). Phones, iPads and PCs keep their own keyboard.
+
+- **Fields:** every text field is a real `<input>`/`<textarea>` with `maxLength` inside a
+  `<form onSubmit>`:
+  - the room code (4), the name (20), the answer (80), the admin password (200) and the pack
+    name (40);
+  - "Close rooms idle for" is now `inputMode="numeric"` (a number pad) instead of
+    `type="number"`.
+  - The TV and the host screen have no text fields.
+- **The answer box:** in a `<textarea>` the kit's ⏎ types a newline. Zinger treats that one
+  keypress as Send, like the real Enter. Its `maxLength` is 81 so that ⏎ still fits at
+  80 characters; the answer is trimmed to 80.
+- **Nothing covered:**
+  - the join error now sits in the join form, above the Join button, instead of at the
+    bottom of the page;
+  - room toasts move to the top on a keyboard screen (`useOnScreenKeyboard`).
+- **Tested on the mock box** with `?bg_keyboard=1` at 1080p and 4K (31 checks, all passed),
+  pressing the kit's keys with pointer events:
+  - typed a wrong code (the error showed above the keys);
+  - typed the right code, which held at 4 letters;
+  - typed a name and joined with Enter;
+  - wrote one answer with a symbol, and one of exactly 80 characters (extra keys ignored),
+    both sent with ⏎ and with no newline in them.
+
+  The Join button, the Send button and the character count stayed above the keys.
+  `?bg_keyboard=0` turns it off. A 320 px phone with no flag shows no keyboard, and its
+  `scrollWidth` stays 320.
+  - **Not exercised:** the toast at the top. That change is CSS only.
+
 ## Branding and the venue
 
 - **Chrome:** follows `--venue-*` (bg, surface, text, primary, accent, font, radius). The
@@ -172,7 +205,7 @@ Each command runs the same `Room` method as the host's button, then broadcasts.
 
 ## Tests
 
-`npm run build && npm test`: **37 tests, all pass.**
+`npm run build && npm test`: **37 tests, all pass** (0.1.1).
 - **Prompt assignment:** 3, 4, 7 and 12 players; two writers per prompt; audience past the
   cap.
 - **A full game:** writing, four Zinger face-offs, round scores, stand-ins, the final's vote
@@ -204,5 +237,9 @@ None blocking. Small ones:
   room with no host phone skips that step. A standard "review" list in status, shaped like
   `pendingClaims` (`{ id, text, author }`), plus a `hide_item` command, would let staff
   moderate from the iPad.
+- **Kit: Enter in a textarea:** the on-screen ⏎ inserts a newline in a `<textarea>`.
+  Single-line answer boxes that wrap (like Zinger's) want Enter to submit. Please dispatch a
+  cancelable `keydown` Enter first and skip the newline when it's `defaultPrevented`, as is
+  already done for inputs. Zinger works around it today.
 - **Audience count in status:** `players` counts writers and audience together. An optional
   `spectators` (or `audience`) field would let the Rooms page show "8 writing + 14 watching".

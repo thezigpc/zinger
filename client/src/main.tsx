@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { basePath, ErrorBoundary, VenueAnnouncement } from "@bargames/gamekit/client";
+import { basePath, ErrorBoundary, OnScreenKeyboard, VenueAnnouncement } from "@bargames/gamekit/client";
 import { AdminPage } from "./pages/AdminPage";
 import { HomePage } from "./pages/HomePage";
 import { RoomPage } from "./pages/RoomPage";
@@ -33,6 +33,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Route path="/admin" element={<AdminPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        {/* Kit 0.10.0: big keys for a box touchscreen with no keyboard (hidden on phones, PCs). */}
+        <OnScreenKeyboard />
       </BrowserRouter>
     </ErrorBoundary>
   </React.StrictMode>,

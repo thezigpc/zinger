@@ -89,13 +89,20 @@ export function HomePage() {
             placeholder="ABCD"
             autoCapitalize="characters"
             autoComplete="off"
+            maxLength={4}
             className="code-input"
           />
         </label>
         <label>
           Your name
-          <input value={name} onChange={(e) => setName(e.target.value.slice(0, 20))} placeholder="Name" autoComplete="nickname" />
+          <input value={name} onChange={(e) => setName(e.target.value.slice(0, 20))} placeholder="Name" autoComplete="nickname" maxLength={20} />
         </label>
+        {/* In the form, next to the fields: an on-screen keyboard covers the bottom of the page. */}
+        {error && (
+          <p className="error" role="alert">
+            {error}
+          </p>
+        )}
         <button className="btn btn-primary btn-big" disabled={busy || code.length !== 4 || !name.trim()}>
           {cohostInvite ? "Join as co-host" : "Join"}
         </button>
@@ -113,12 +120,6 @@ export function HomePage() {
           </button>
           <p className="muted small">For a laptop or iPad on a TV: the big view with the controls on it (this screen doesn't play).</p>
         </section>
-      )}
-
-      {error && (
-        <p className="error" role="alert">
-          {error}
-        </p>
       )}
 
       <footer className="home-foot">

@@ -120,6 +120,12 @@ function AnswerCard({ code, task, label, act, onSent }: { code: string; task: Wr
   // Drafts go to the server too (no ack, no broadcast): if this phone drops, the answer
   // typed so far still counts when writing closes.
   const change = (v: string) => {
+    // The kit's on-screen Enter types a newline into a textarea: treat that one keypress as
+    // Send, like the real Enter key (handled in onKeyDown).
+    if (v.length === text.length + 1 && v.replace("\n", "") === text) {
+      void send();
+      return;
+    }
     const t = v.replace(/\n/g, " ").slice(0, ANSWER_MAX);
     setText(t);
     setDraft(code, task.id, t);
@@ -160,7 +166,8 @@ function AnswerCard({ code, task, label, act, onSent }: { code: string; task: Wr
         }}
         placeholder="Your funniest answer"
         rows={3}
-        maxLength={ANSWER_MAX}
+        // One over, so the on-screen Enter still fits at 80 characters; change() trims to 80.
+        maxLength={ANSWER_MAX + 1}
         autoFocus
         aria-label="Your answer"
         enterKeyHint="send"
