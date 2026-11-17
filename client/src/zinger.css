@@ -1,0 +1,926 @@
+/* Zinger's own pieces on top of the shared base (index.css). */
+
+/* ================================================================ phones */
+.hero-mark {
+  display: grid;
+  place-items: center;
+}
+.hero-bolt {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 24px;
+  background: var(--surface);
+  font-size: 3rem;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--zap) 40%, transparent);
+}
+.zap-text {
+  color: var(--zap);
+}
+.round-tag {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.paused-strip {
+  margin: 0;
+  padding: 0.6rem 0.9rem;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--zap) 22%, var(--surface));
+  font-weight: 700;
+  text-align: center;
+}
+.countdown-paused .countdown-fill {
+  stroke: var(--muted);
+}
+.btn-small {
+  min-height: 44px;
+  padding: 0.35em 0.8em;
+  font-size: 0.9rem;
+}
+
+/* writing */
+.write {
+  display: grid;
+  gap: 0.75rem;
+}
+.write-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.answer-card {
+  display: grid;
+  gap: 0.6rem;
+}
+.answer-card p {
+  margin: 0;
+}
+.answer-prompt {
+  font-size: 1.35rem;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.answer-card textarea {
+  width: 100%;
+  min-height: 6.5em;
+  font: inherit;
+  font-size: 1.15rem;
+  line-height: 1.35;
+  padding: 0.7em 0.8em;
+  border-radius: 12px;
+  border: 2px solid color-mix(in srgb, var(--text) 22%, transparent);
+  background: var(--bg);
+  color: var(--text);
+  resize: none;
+}
+.answer-card textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.char-count {
+  justify-self: end;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.char-count.low {
+  color: var(--danger);
+  font-weight: 700;
+}
+.sent-list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+  text-align: left;
+}
+.sent-list li {
+  background: var(--surface-2);
+  border-radius: 12px;
+  padding: 0.6rem 0.8rem;
+}
+.sent-list p {
+  margin: 0 0 0.25rem;
+  overflow-wrap: anywhere;
+}
+.sent-prompt {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.sent-text {
+  font-weight: 700;
+}
+
+/* voting */
+.vote-btn {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 96px;
+  padding: 1rem 2.6rem 1rem 1rem;
+  border: 3px solid transparent;
+  border-radius: var(--radius);
+  color: var(--card-ink);
+  font: inherit;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.vote-0 {
+  background: linear-gradient(135deg, var(--card-a), var(--card-a-deep));
+}
+.vote-1 {
+  background: linear-gradient(135deg, var(--card-b), var(--card-b-deep));
+}
+.vote-btn:active {
+  transform: scale(0.98);
+}
+.vote-btn.picked {
+  border-color: var(--zap);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--zap) 45%, transparent);
+}
+.vote-btn.other {
+  opacity: 0.55;
+}
+.vote-letter {
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  background: #0003;
+  font-weight: 900;
+}
+.votes-left {
+  margin: 0;
+  font-weight: 700;
+  text-align: center;
+}
+.final-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.final-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.6rem 0.6rem 0.6rem 0.9rem;
+  background: var(--surface);
+  border-radius: 12px;
+  border: 2px solid transparent;
+}
+.final-item.has-votes {
+  border-color: var(--zap);
+}
+.final-item.mine {
+  opacity: 0.6;
+}
+.final-text {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex: none;
+}
+.step {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  border: none;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 1.5rem;
+  font-weight: 800;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.step:disabled {
+  opacity: 0.35;
+}
+.step-n {
+  min-width: 1.5em;
+  text-align: center;
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+/* results (phone) */
+.result {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 0.8rem 1rem;
+  text-align: left;
+  border: 2px solid transparent;
+}
+.result p {
+  margin: 0.15rem 0;
+  overflow-wrap: anywhere;
+}
+.result-text {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.result-nums {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  color: var(--muted);
+}
+.result-pts {
+  margin-left: auto;
+  color: var(--text);
+  font-size: 1.2rem;
+}
+.result-mine {
+  border-color: var(--accent);
+}
+.result-zinger {
+  border-color: var(--zap);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--zap) 35%, transparent);
+}
+.zinger-tag {
+  color: var(--zap);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+}
+
+/* scores additions */
+.scores-gain {
+  color: var(--ok);
+  font-weight: 800;
+  margin-left: auto;
+  padding-right: 0.6em;
+}
+.scores li.lead {
+  background: color-mix(in srgb, var(--zap) 18%, var(--surface));
+}
+
+/* host */
+.game-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.game-what {
+  margin: 0.2rem 0 0;
+  font-weight: 700;
+}
+.host-play {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.75rem;
+  border: 2px dashed color-mix(in srgb, var(--accent) 50%, transparent);
+  border-radius: var(--radius);
+}
+.host-play h3 {
+  margin: 0;
+}
+.check-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+.check-group {
+  margin-top: 0.6rem;
+}
+.check-prompt {
+  margin: 0 0 0.3rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.check-panel li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: var(--surface-2);
+  border-radius: 10px;
+  padding: 0.4rem 0.4rem 0.4rem 0.7rem;
+}
+.check-text {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.check-panel li.is-hidden .check-text {
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+
+/* Narrow phones (320 px): nothing may overflow. */
+@media (max-width: 360px) {
+  .home,
+  .player,
+  .host,
+  .admin {
+    padding: 0.75rem 0.6rem 1.5rem;
+  }
+  .vote-btn {
+    font-size: 1.05rem;
+    padding: 0.8rem 2.2rem 0.8rem 0.8rem;
+  }
+  .step {
+    width: 44px;
+    height: 44px;
+  }
+  .header-actions {
+    gap: 0.15rem;
+  }
+}
+
+/* ================================================================ TV (1920x1080 CSS) */
+/* Everything in vh/vw: box TVs lay out at 1920x1080 CSS (4K too), and a 720p screen scales. */
+.tv {
+  position: relative;
+  height: calc(100vh - var(--bargames-announcement-top, 0px) - var(--bargames-announcement-bottom, 0px));
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 1.5vh;
+  padding: calc(3.5vh + var(--bg-safe-y, 0px)) calc(3.5vw + var(--bg-safe-x, 0px));
+  font-size: 3vh;
+  background: radial-gradient(ellipse at 15% 0%, color-mix(in srgb, var(--card-a) 14%, transparent), transparent 55%),
+    radial-gradient(ellipse at 85% 100%, color-mix(in srgb, var(--card-b) 16%, transparent), transparent 55%), var(--bg);
+}
+.tv-top {
+  display: flex;
+  align-items: center;
+  gap: 2vw;
+}
+.tv-title {
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  font-weight: 900;
+  font-size: 3.8vh;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tv-bolt {
+  color: var(--zap);
+}
+.tv-logo {
+  height: 6vh;
+  width: auto;
+}
+.tv-round {
+  font-size: 3.4vh;
+  font-weight: 800;
+  color: var(--accent);
+}
+.tv-fs {
+  opacity: 0.5;
+}
+.tv-main {
+  min-height: 0;
+  display: grid;
+}
+.tv-headline {
+  font-size: 7vh;
+  line-height: 1.1;
+  margin: 0;
+}
+.tv-sub {
+  font-size: 3.4vh;
+  color: var(--muted);
+  margin: 0;
+}
+.tv-count {
+  font-size: 4.4vh;
+  font-weight: 800;
+  margin: 0;
+}
+.tv-aud {
+  color: var(--muted);
+  font-weight: 700;
+}
+.tv-center {
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+}
+.tv-countdown {
+  width: 14vh;
+  height: 14vh;
+  font-size: 5.5vh;
+}
+.tv-countdown .countdown-track,
+.tv-countdown .countdown-fill {
+  stroke-width: 8;
+}
+
+/* lobby */
+.tv-lobby {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 5vw;
+  align-items: center;
+  min-height: 0;
+}
+.tv-join {
+  display: grid;
+  justify-items: center;
+  gap: 1.5vh;
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 3vh;
+  width: min(46vh, 34vw);
+  --join-max-width: 100%;
+}
+.tv-join-qr {
+  width: 100% !important;
+  height: auto !important;
+}
+.tv-join-address {
+  font-size: 3.2vh;
+  text-align: center;
+}
+.tv-code-big {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 9vh;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  line-height: 1;
+}
+.tv-lobby-side {
+  display: grid;
+  gap: 2.4vh;
+  align-content: center;
+  min-width: 0;
+  min-height: 0;
+}
+.tv-how {
+  margin: 0;
+  padding-left: 1.2em;
+  font-size: 3.4vh;
+  display: grid;
+  gap: 0.6vh;
+}
+
+/* name chips: smaller and tighter as the room fills */
+.tv-names {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2vh 1vw;
+  font-size: 3.2vh;
+  max-height: 38vh;
+  overflow: hidden;
+  align-content: flex-start;
+}
+.tv-names.dense {
+  font-size: 2.8vh;
+  gap: 1vh 0.8vw;
+}
+.tv-names.denser {
+  font-size: 2.4vh;
+  gap: 0.8vh 0.6vw;
+}
+.tv-names li {
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 0.3em 0.9em;
+  font-weight: 700;
+  border: 0.25vh solid transparent;
+}
+.tv-names li.away {
+  opacity: 0.45;
+}
+.tv-names li.done {
+  border-color: var(--ok);
+}
+.tick {
+  margin-right: 0.4em;
+  color: var(--muted);
+}
+.tv-names li.done .tick {
+  color: var(--ok);
+}
+
+/* writing / checking */
+.tv-stage {
+  display: grid;
+  gap: 3vh;
+  align-content: start;
+  padding-bottom: 17vh; /* room for the join corner */
+}
+.tv-stage-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3vw;
+}
+.tv-stage.tv-center {
+  align-content: center;
+}
+
+/* the face-off */
+.tv-faceoff {
+  display: flex;
+  flex-direction: column;
+  gap: 2.4vh;
+  min-height: 0;
+  padding-bottom: 17vh;
+}
+.tv-faceoff-count {
+  margin: 0;
+  font-size: 2.8vh;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.tv-prompt {
+  margin: 0;
+  font-size: 6vh;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+}
+.tv-cards {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 2vw;
+  align-items: stretch;
+}
+.tv-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5vh;
+  padding: 6vh 2.5vw 3.5vh;
+  border-radius: calc(var(--radius) * 1.5);
+  color: var(--card-ink);
+  min-height: 0;
+  overflow: hidden;
+}
+.tv-card-0 {
+  background: linear-gradient(140deg, var(--card-a), var(--card-a-deep));
+}
+.tv-card-1 {
+  background: linear-gradient(140deg, var(--card-b), var(--card-b-deep));
+}
+.tv-card-letter {
+  position: absolute;
+  top: 2vh;
+  left: 1.5vw;
+  font-size: 3vh;
+  font-weight: 900;
+  opacity: 0.7;
+}
+.tv-card-text {
+  margin: 0;
+  font-size: 5.4vh;
+  font-weight: 800;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  text-shadow: 0 0.3vh 1vh #0005;
+}
+.tv-card.revealed .tv-card-text {
+  font-size: 4.4vh;
+}
+.tv-card-result {
+  display: grid;
+  gap: 0.6vh;
+  padding-top: 1.5vh;
+  border-top: 0.3vh solid #fff5;
+  animation: pop 0.4s ease-out;
+}
+.tv-card-result p {
+  margin: 0;
+}
+.tv-card-author {
+  font-size: 4vh;
+  font-weight: 900;
+}
+.tv-standin {
+  font-size: 2.8vh;
+  font-weight: 600;
+  opacity: 0.8;
+}
+.tv-card-votes {
+  font-size: 3.2vh;
+}
+.tv-card-n {
+  font-size: 5vh;
+  font-weight: 900;
+}
+.tv-card-aud {
+  opacity: 0.85;
+}
+.tv-card-pts {
+  font-size: 4.4vh;
+  font-weight: 900;
+}
+.tv-card-badge {
+  font-size: 2.8vh;
+  font-weight: 700;
+}
+.tv-card.zinger {
+  outline: 0.8vh solid var(--zap);
+  box-shadow: 0 0 6vh color-mix(in srgb, var(--zap) 45%, transparent);
+}
+.tv-vs {
+  display: grid;
+  place-items: center;
+  font-size: 5vh;
+  font-weight: 900;
+  color: var(--muted);
+}
+.tv-status {
+  margin: 0;
+  font-size: 3.4vh;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* the Zinger moment: one pop, then it stays (light on animation) */
+.tv-zinger {
+  position: absolute;
+  left: 50%;
+  top: 17vh;
+  transform: translate(-50%, -50%) rotate(-2deg);
+  display: flex;
+  align-items: baseline;
+  gap: 2vw;
+  white-space: nowrap;
+  padding: 1.6vh 3vw;
+  border-radius: calc(var(--radius) * 2);
+  background: var(--zap);
+  color: var(--zap-ink);
+  box-shadow: 0 2vh 8vh #000a;
+  animation: zing 0.5s cubic-bezier(0.2, 1.6, 0.4, 1) 0.6s both;
+  z-index: 4;
+}
+.tv-zinger-word {
+  font-size: 9vh;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.03em;
+}
+.tv-zinger-who {
+  font-size: 4vh;
+  font-weight: 800;
+}
+@keyframes zing {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(-2deg) scale(0.3);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(-2deg) scale(1);
+  }
+}
+
+/* the final round: a grid that fits 3 to 24 answers (--cols, --fs set inline) */
+.tv-final-round {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  min-height: 0;
+  padding-bottom: 17vh;
+}
+.tv-final-round .tv-prompt {
+  font-size: 5.2vh;
+}
+.tv-final-round.tv-full {
+  padding-bottom: 0;
+  gap: 1.5vh;
+}
+.tv-final-round.tv-full .tv-countdown {
+  width: 9vh;
+  height: 9vh;
+  font-size: 3.6vh;
+}
+.tv-final-round.tv-full .tv-prompt {
+  font-size: 4.6vh;
+}
+.tv-fgrid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 1.4vh 1.2vw;
+  font-size: var(--fs, 3.6vh);
+}
+.tv-fcard {
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+  gap: 0.6vh;
+  padding: 1.2vh 1vw;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 0.3vh solid color-mix(in srgb, var(--text) 12%, transparent);
+  min-height: 0;
+  overflow: hidden;
+}
+.tv-fcard p {
+  margin: 0;
+}
+.tv-fcard-text {
+  font-weight: 800;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+.tv-fcard.revealed {
+  animation: pop 0.35s ease-out both;
+  animation-delay: calc(var(--i, 0) * 0.5s);
+}
+.tv-fcard-result {
+  display: flex;
+  gap: 0.8em;
+  align-items: baseline;
+  font-size: 0.8em;
+}
+.tv-fcard-author {
+  font-weight: 900;
+  color: var(--accent);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tv-fcard-votes {
+  color: var(--muted);
+}
+.tv-fcard-pts {
+  margin-left: auto;
+  font-weight: 900;
+}
+.tv-fcard.best {
+  border-color: var(--card-a);
+  background: color-mix(in srgb, var(--card-a) 25%, var(--surface));
+}
+.tv-fcard.zinger {
+  border-color: var(--zap);
+  box-shadow: 0 0 3vh color-mix(in srgb, var(--zap) 40%, transparent);
+}
+
+/* scores and the end: one column up to 8 writers, two columns past that */
+.tv-board {
+  display: grid;
+  gap: 2.5vh;
+  align-content: start;
+  justify-items: center;
+  text-align: center;
+  padding-bottom: 15vh;
+  min-height: 0;
+}
+.tv-winner {
+  color: var(--zap);
+}
+.tv-board-list {
+  width: min(70vw, 1300px);
+  font-size: 3.8vh;
+  min-height: 0;
+}
+.tv-board-list.dense {
+  width: 86vw;
+  font-size: 3.2vh;
+}
+.tv-board-list.denser {
+  width: 86vw;
+  font-size: 2.6vh;
+}
+.tv-board-list .scores {
+  font-size: 1em;
+  text-align: left;
+}
+.tv-board-list .scores li {
+  padding: 0.35em 0.7em;
+}
+.scores-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(var(--rows, 6), auto);
+  grid-auto-flow: column;
+  column-gap: 2vw;
+}
+
+/* join corner during play */
+.tv-corner {
+  position: absolute;
+  right: calc(3.5vw + var(--bg-safe-x, 0px));
+  bottom: calc(3.5vh + var(--bg-safe-y, 0px));
+  display: flex;
+  align-items: center;
+  gap: 1.2vw;
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 1.2vh 1.2vw;
+  max-width: 34vw;
+  --join-max-width: 100%;
+}
+.tv-corner-qr {
+  width: 12vh !important;
+  height: 12vh !important;
+  padding: 0.5vh;
+}
+.tv-corner-text {
+  display: grid;
+  gap: 0.5vh;
+  min-width: 0;
+}
+.tv-corner .tv-join-address {
+  font-size: 2.6vh;
+  text-align: left;
+}
+.tv-code {
+  font-family: ui-monospace, Consolas, monospace;
+  font-weight: 800;
+  font-size: 4.5vh;
+  letter-spacing: 0.15em;
+}
+.tv-paused {
+  position: absolute;
+  left: 50%;
+  top: calc(3.5vh + var(--bg-safe-y, 0px));
+  transform: translateX(-50%);
+  padding: 1vh 2.5vw;
+  border-radius: 999px;
+  background: var(--zap);
+  color: var(--zap-ink);
+  font-size: 3.6vh;
+  font-weight: 900;
+  z-index: 5;
+}
+.tv-controls {
+  position: absolute;
+  left: 50%;
+  bottom: calc(1.5vh + var(--bargames-announcement-bottom, 0px));
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.6rem;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  padding: 0.5rem;
+  border-radius: 16px;
+  font-size: 1rem;
+  z-index: 6;
+}
+
+/* A portrait or small "TV" (a phone opening the TV view): stack things. */
+@media (max-aspect-ratio: 1/1) {
+  .tv {
+    font-size: 2.2vh;
+  }
+  .tv-lobby {
+    grid-template-columns: 1fr;
+  }
+  .tv-join {
+    width: min(60vw, 40vh);
+  }
+  .tv-cards {
+    grid-template-columns: 1fr;
+  }
+  .tv-vs {
+    font-size: 3vh;
+  }
+  .tv-corner {
+    display: none;
+  }
+  .tv-card-text {
+    font-size: 3.2vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tv-zinger,
+  .tv-fcard.revealed,
+  .tv-card-result {
+    animation: none;
+  }
+}

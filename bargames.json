@@ -1,0 +1,23 @@
+{
+  "id": "zinger",
+  "name": "Zinger",
+  "version": "0.1.0",
+  "image": "ghcr.io/thezigpc/zinger:0.1.0",
+  "port": 3015,
+  "sdk": { "version": "0.16.0", "level": 3 },
+  "routing": { "basePath": true },
+  "routes": {
+    "player": "/",
+    "table": "/room/{code}?role=table",
+    "host": "/",
+    "admin": "/admin"
+  },
+  "health": "/health",
+  "events": ["room_created", "room_closed", "players_changed", "round_started", "round_ended", "winner", "game_over", "x-zinger-sweep"],
+  "commands": ["create_room", "start", "pause", "resume", "next_round", "end", "host_link", "cohost_link", "remove_cohost"],
+  "brandable": ["displayName", "tagline", "accent"],
+  "sessionKinds": ["venue", "patron", "private"],
+  "resources": { "memory": "256m", "cpus": 1 },
+  "network": { "internet": false },
+  "env": { "DATA_DIR": "/data" }
+}

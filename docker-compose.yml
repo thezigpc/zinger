@@ -1,0 +1,26 @@
+# Self-hosting with Docker (optional; a Bar Games box runs the published image itself).
+#   docker compose up -d --build
+services:
+  app:
+    build: .
+    container_name: zinger-app
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3015:3015"
+    environment:
+      PORT: "3015"
+      DATA_DIR: /data
+      GAME_NAME: "${GAME_NAME:-Zinger}"
+      # Leave unset to use the /admin first-run setup screen.
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:-}"
+      LOG_LEVEL: "${LOG_LEVEL:-info}"
+    volumes:
+      # Admin password hash, settings and prompt packs survive rebuilds.
+      # The image runs as uid 1000: `sudo chown -R 1000:1000 ./data` once.
+      - ./data:/data
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3015/health').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3

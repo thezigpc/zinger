@@ -1,0 +1,15 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.env
+*.log
+data/
+cloudflared/
+*.pem
+credentials.json
+
+# Private, machine-specific notes
+CLAUDE.local.md
+
+# The brief this repo was built from (local only)
+BRIEF.md

@@ -1,0 +1,9 @@
+{
+  "name": "Friday night",
+  "prompts": [
+    "The worst thing to hear at a car wash",
+    { "prompt": "A rejected name for a food truck", "tag": "family" },
+    { "prompt": "A cocktail that should be illegal", "tag": "spicy" }
+  ],
+  "standIns": ["A very wet llama", "Seventeen spoons"]
+}
