@@ -200,7 +200,7 @@ function SettingsPanel({ view, act }: { view: RoomView; act: Act }) {
           Writers per game
           <small className="muted">Everyone past this is audience. Up to {view.writerLimit} (set on the admin page).</small>
         </span>
-        <select value={s.maxWriters} onChange={(e) => void set({ maxWriters: Number(e.target.value) })}>
+        <select aria-label="Writers per game" value={s.maxWriters} onChange={(e) => void set({ maxWriters: Number(e.target.value) })}>
           {writerChoices.map((n) => (
             <option key={n} value={n}>
               {n}

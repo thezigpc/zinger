@@ -924,9 +924,3 @@
     animation: none;
   }
 }
-
-/* On a screen with the kit's on-screen keyboard, toasts go to the top (the keys cover the bottom). */
-.toast.toast-top {
-  bottom: auto;
-  top: calc(20px + var(--bargames-announcement-top, 0px));
-}

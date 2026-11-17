@@ -1,13 +1,13 @@
 # Zinger on a Bar Games box
 
 **Report for the Bar Games side.** Guide followed:
-`C:\CodeProjects\GameBroker\integration\README.md` (SDK 0.16.0, game kit 0.10.0).
+`C:\CodeProjects\GameBroker\integration\README.md` (SDK 0.16.0, game kit 0.10.6).
 
 | | |
 |---|---|
 | Manifest | [bargames.json](bargames.json): `id: "zinger"`, port 3015, SDK level 3, `routing.basePath: true` |
-| Image | `ghcr.io/thezigpc/zinger:0.1.1` (tag = `version`) |
-| SDK / kit | `vendor/bargames-sdk-0.16.0.tgz`, `vendor/bargames-gamekit-0.10.0.tgz` |
+| Image | `ghcr.io/thezigpc/zinger:0.1.2` (tag = `version`) |
+| SDK / kit | `vendor/bargames-sdk-0.16.0.tgz`, `vendor/bargames-gamekit-0.10.6.tgz` |
 | Level reached | **3** (branded, connected, controllable) |
 
 ## `npx bargames check`
@@ -106,38 +106,58 @@ Each command runs the same `Room` method as the host's button, then broadcasts.
 - **Writer limit:** the admin can raise it from 10 to as many as 24 writers ("Writer limit" on
   `/admin`), and the TV layouts scale to match.
 
-## On-screen keyboard (0.1.1, kit 0.10.0)
+## On-screen keyboard (0.1.2, kit 0.10.6)
 
 For a touchscreen plugged into the box (box 0.21.0): `<OnScreenKeyboard />` is mounted once in
-[client/src/main.tsx](client/src/main.tsx), so it covers every page (one app: player, host,
-TV/"host on this screen", admin). Phones, iPads and PCs keep their own keyboard.
+[client/src/main.tsx](client/src/main.tsx). It covers every page, because player, host,
+TV/"host on this screen" and admin are one app. Phones, iPads and PCs keep their own keyboard
+and their own dropdowns.
 
-- **Fields:** every text field is a real `<input>`/`<textarea>` with `maxLength` inside a
+- **Fields:** every text field is a real `<input>`/`<textarea>` with `maxLength`, inside a
   `<form onSubmit>`:
-  - the room code (4), the name (20), the answer (80), the admin password (200) and the pack
-    name (40);
-  - "Close rooms idle for" is now `inputMode="numeric"` (a number pad) instead of
-    `type="number"`.
-  - The TV and the host screen have no text fields.
-- **The answer box:** in a `<textarea>` the kit's ⏎ types a newline. Zinger treats that one
-  keypress as Send, like the real Enter. Its `maxLength` is 81 so that ⏎ still fits at
-  80 characters; the answer is trimmed to 80.
+  - room code (4), name (20), answer (80), admin password (200), pack name (40);
+  - "Close rooms idle for" is `type="text" inputMode="numeric"`, which gets the number pad.
+- **The answer box** sends on Enter, from a real keyboard or the kit's ⏎:
+  - `onKeyDown` calls `preventDefault`, and kit 0.10.1+ honours it, so no newline goes in;
+  - 0.1.1's workaround (newline as Send, `maxLength` 81) is gone.
+- **Dropdowns** (host settings, admin defaults) open the kit's big-button list (0.10.6).
+  - The two dropdowns that have hint text carry an `aria-label`, so the list's title is just
+    "Writers per game" / "Writer limit".
+  - There's no global `button { white-space: nowrap }` to undo.
 - **Nothing covered:**
-  - the join error now sits in the join form, above the Join button, instead of at the
-    bottom of the page;
-  - room toasts move to the top on a keyboard screen (`useOnScreenKeyboard`).
-- **Tested on the mock box** with `?bg_keyboard=1` at 1080p and 4K (31 checks, all passed),
-  pressing the kit's keys with pointer events:
-  - typed a wrong code (the error showed above the keys);
-  - typed the right code, which held at 4 letters;
-  - typed a name and joined with Enter;
-  - wrote one answer with a symbol, and one of exactly 80 characters (extra keys ignored),
-    both sent with ⏎ and with no newline in them.
-
-  The Join button, the Send button and the character count stayed above the keys.
-  `?bg_keyboard=0` turns it off. A 320 px phone with no flag shows no keyboard, and its
-  `scrollWidth` stays 320.
-  - **Not exercised:** the toast at the top. That change is CSS only.
+  - the join error sits in the join form, above the Join button;
+  - room toasts sit above the keyboard (`bottom` adds `--bargames-keyboard`, kit 0.10.2).
+- **Fixed on the way:**
+  - The admin idle field refilled itself whenever it was emptied, so it couldn't be
+    cleared to type a new number, on any keyboard. Save is now disabled while it's empty.
+  - The phone host screen was 341 px wide at 320 px: a settings dropdown wouldn't shrink.
+    Settings rows now wrap, so a long dropdown drops under its label.
+- **Tested on the mock box with `?bg_keyboard=1` at 1080p and 4K: 65 checks, all passed.**
+  Headless Chrome pressed the kit's keys with pointer events and tapped with real mouse
+  events.
+  - **Join:**
+    - a wrong code shows its error above the keys;
+    - the right code holds at 4 letters;
+    - a name, then Enter joins.
+  - **Answers:**
+    - one with a symbol, and one of exactly 80 characters (extra keys ignored);
+    - both sent with ⏎, with no newline;
+    - Send, the character count and a toast all stay above the keys.
+  - **Host settings:**
+    - Prompts opens the list and "Family and spicy" takes;
+    - Writers opens the list, set to 6;
+    - Cancel closes it;
+    - every choice fits its button.
+  - **Admin:**
+    - the autofocused password opens the keyboard on load, with no automatic Shift;
+    - typed the box password and signed in with Enter;
+    - the idle field gets the number pad, cleared, 45 typed, saved with Enter;
+    - Writer limit opens a list of 22 choices, set to 16.
+  - **Off:** `?bg_keyboard=0` turns it off.
+  - **Phone, 320 px, no flag:**
+    - no keyboard;
+    - dropdowns stay the phone's own;
+    - `scrollWidth` 320 on the join and host screens.
 
 ## Branding and the venue
 
@@ -187,7 +207,10 @@ TV/"host on this screen", admin). Phones, iPads and PCs keep their own keyboard.
 
 ## Image
 
-- **Name:** `ghcr.io/thezigpc/zinger:0.1.0`, from commit `bf1a40f`.
+- **Name:** `ghcr.io/thezigpc/zinger:<version>`. The releases:
+  - 0.1.0 from `bf1a40f`;
+  - 0.1.1 from `396b113` (on-screen keyboard);
+  - 0.1.2 (kit 0.10.6).
 - **Repo:** [github.com/thezigpc/zinger](https://github.com/thezigpc/zinger) (public).
 - **Workflow:** `.github/workflows/publish-image.yml`, unchanged from the snippet.
 - **First run:** [run 44007201518](https://github.com/thezigpc/zinger/actions/runs/44007201518),
@@ -205,7 +228,7 @@ TV/"host on this screen", admin). Phones, iPads and PCs keep their own keyboard.
 
 ## Tests
 
-`npm run build && npm test`: **37 tests, all pass** (0.1.1).
+`npm run build && npm test`: **37 tests, all pass** (0.1.2).
 - **Prompt assignment:** 3, 4, 7 and 12 players; two writers per prompt; audience past the
   cap.
 - **A full game:** writing, four Zinger face-offs, round scores, stand-ins, the final's vote
@@ -237,9 +260,6 @@ None blocking. Small ones:
   room with no host phone skips that step. A standard "review" list in status, shaped like
   `pendingClaims` (`{ id, text, author }`), plus a `hide_item` command, would let staff
   moderate from the iPad.
-- **Kit: Enter in a textarea:** the on-screen ⏎ inserts a newline in a `<textarea>`.
-  Single-line answer boxes that wrap (like Zinger's) want Enter to submit. Please dispatch a
-  cancelable `keydown` Enter first and skip the newline when it's `defaultPrevented`, as is
-  already done for inputs. Zinger works around it today.
+- **Kit: Enter in a textarea:** done in kit 0.10.1, and used since Zinger 0.1.2.
 - **Audience count in status:** `players` counts writers and audience together. An optional
   `spectators` (or `audience`) field would let the Rooms page show "8 writing + 14 watching".

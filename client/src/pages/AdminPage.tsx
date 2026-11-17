@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { AUTO_NEXT_CHOICES, VOTE_CHOICES, WRITE_CHOICES, WRITER_LIMIT, type AdminOverview, type Rating, type RoomSettings } from "@zinger/shared";
 import { BoxAdminLink, staffSignIn } from "@bargames/gamekit/client";
@@ -188,9 +188,15 @@ function Dashboard({ token, onSignOut, onExpired }: { token: string; onSignOut: 
     const t = setInterval(load, 5000);
     return () => clearInterval(t);
   }, [load]);
+  // Fill the field once, when the settings first load. (Refilling it whenever it was empty put
+  // the old number straight back while someone cleared it to type a new one.)
+  const idleLoaded = useRef(false);
   useEffect(() => {
-    if (data && idle === "") setIdle(String(data.settings.roomIdleMinutes));
-  }, [data, idle]);
+    if (data && !idleLoaded.current) {
+      idleLoaded.current = true;
+      setIdle(String(data.settings.roomIdleMinutes));
+    }
+  }, [data]);
 
   const run = async (fn: () => Promise<string | void>) => {
     setError("");
@@ -262,7 +268,7 @@ function Dashboard({ token, onSignOut, onExpired }: { token: string; onSignOut: 
             Writer limit
             <small className="muted">The most writers a game can have (hosts choose up to this). Everyone past it joins the audience. More writers means more face-offs: a round has one per writer.</small>
           </span>
-          <select value={data.settings.writerLimit} onChange={(e) => void run(async () => void (await api("/settings", token, { method: "PUT", body: { writerLimit: Number(e.target.value) } })))}>
+          <select aria-label="Writer limit" value={data.settings.writerLimit} onChange={(e) => void run(async () => void (await api("/settings", token, { method: "PUT", body: { writerLimit: Number(e.target.value) } })))}>
             {Array.from({ length: WRITER_LIMIT.max - WRITER_LIMIT.min + 1 }, (_, i) => i + WRITER_LIMIT.min).map((n) => (
               <option key={n} value={n}>
                 {n}
@@ -356,7 +362,7 @@ function Dashboard({ token, onSignOut, onExpired }: { token: string; onSignOut: 
         >
           <span>Close rooms idle for</span>
           <input className="num" inputMode="numeric" pattern="[0-9]*" maxLength={4} value={idle} onChange={(e) => setIdle(e.target.value.replace(/\D/g, ""))} /> minutes
-          <button className="btn btn-ghost">Save</button>
+          <button className="btn btn-ghost" disabled={!idle}>Save</button>
         </form>
       </section>
 

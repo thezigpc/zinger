@@ -1,8 +1,8 @@
 {
   "id": "zinger",
   "name": "Zinger",
-  "version": "0.1.1",
-  "image": "ghcr.io/thezigpc/zinger:0.1.1",
+  "version": "0.1.2",
+  "image": "ghcr.io/thezigpc/zinger:0.1.2",
   "port": 3015,
   "sdk": { "version": "0.16.0", "level": 3 },
   "routing": { "basePath": true },
