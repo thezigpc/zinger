@@ -129,9 +129,28 @@ Each command runs the same `Room` method as the host's button, then broadcasts.
   as `node`; `docker-compose.yml` is for self-hosting. Both are the same as This or That's.
 - **Clean-checkout build:** proven by the publish run below, which builds `linux/amd64`
   from a fresh checkout of the repo.
-- **Read-only run: not tested.** There is no Docker on the development PC, so
-  `docker run --read-only --tmpfs /tmp --cap-drop ALL -v zt:/data …` hasn't been run. The
-  server writes only under `DATA_DIR`, as listed above.
+- **Box-style read-only run, tested on a Linux Docker host** with the published image
+  `ghcr.io/thezigpc/zinger:0.1.0`:
+  - **Sandbox:** `--read-only --tmpfs /tmp:size=64m --cap-drop ALL --security-opt no-new-privileges --memory 256m --cpus 1 -v zinger-test-data:/data`.
+  - **User:** runs as `node` (uid 1000).
+  - **Full game:** a smoke test played writing → 6 face-offs → round scores → the final →
+    game over.
+  - **Writes to `/data`:** admin password setup, a pack upload and a writer-limit change.
+    Afterwards `/data` held only `admin.json`, `settings.json` and `packs/<id>.json`.
+  - **Clean:** `docker diff` was empty (nothing written outside the volume), and the logs had
+    no `EROFS`/`EACCES`/errors.
+  - **Restart:** after a container restart, the password, the pack and the setting were all
+    still there.
+- **Self-hosted standalone mode, tested on the same host:**
+  - a fresh `git clone` of the public repo, then `docker compose up -d --build` with
+    `GAME_NAME="Zinger Night"` and a `./data` bind mount owned by 1000:1000;
+  - it built cleanly and went healthy;
+  - `/api/config` gave "Zinger Night", and `venue.json` said `standalone: true`;
+  - the client's assets, deep links (`/room/ABCD`) and `/admin` all answered 200;
+  - the same full-game smoke test passed, and the data survived `docker compose restart`;
+  - the TV lobby rendered with the game's own colors and the `GAME_NAME` title.
+
+  Everything from the test was removed afterwards.
 
 ## Image
 
